@@ -2,9 +2,12 @@ import Product from './models/product';
 
 export const resolvers = {
     Query: {
-        allProducts() {
-            return [{_id: 123, name: 'Demo GraphQL', qty: 1}];
+        async allProducts() {
+            return await Product.find();
         },
+        async getProduct(_, { _id }) {
+            return await Product.findById(_id);
+        }
     },
     Mutation: {
         async createProduct(_, { input }) {
