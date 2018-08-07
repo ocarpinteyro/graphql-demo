@@ -1,4 +1,3 @@
-import { makeExecutableSchema } from 'graphql-tools';
 import { resolvers } from './resolvers';
 
 const typeDefs = `
@@ -22,7 +21,7 @@ const typeDefs = `
     }
 `;
 
-export default makeExecutableSchema({
+export default {
     typeDefs,
     resolvers,
-});
+};
