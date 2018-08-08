@@ -13,6 +13,6 @@ input AuthInput {
     password: String!
 }
 
-type Mutation {
-    signup(input: AuthInput) : AuthPayload
+extend type Mutation {
+    signup(input: AuthInput!) : AuthPayload!
 }
