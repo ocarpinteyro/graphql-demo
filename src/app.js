@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
-import schema from './schema';
 import { GraphQLServer } from 'graphql-yoga';
-import graphqlConfig from './schema';
+import graphqlConfig from './api';
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/gql_db', { useNewUrlParser: true });
