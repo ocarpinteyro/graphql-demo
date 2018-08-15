@@ -11,7 +11,11 @@ export default {
     },
     Mutation: {
         async createProduct(_, { input }, ctx) {
-            const res = await ctx.models.product.create(input);
+            console.log("2. Product parent resolver run")
+            const res = await ctx.models.product.create({
+                ...input,
+                owner: ctx.userId,
+            });
             return res;
         },
         async updateProduct(_, { _id, input }, ctx) {
@@ -21,6 +25,19 @@ export default {
         async deleteProduct(_, { _id }, ctx) {
             const res = await ctx.models.product.findByIdAndRemove(_id);
             return res;
+        },
+    },
+    Product: {
+        async owner(product, args, ctx) {
+            console.log("3. Onwer Resolver run");
+            console.log(product);
+            const owner = await ctx.models.user.findOne(
+                {
+                    _id: product.owner,
+                },
+                "_id email",
+            );
+            return owner;
         },
     },
 };
