@@ -1,12 +1,12 @@
-import mongoose from 'mongoose';
-import { GraphQLServer } from 'graphql-yoga';
-import graphqlConfig from './api';
-import { makeExecutableSchema } from 'graphql-tools';
-import { applyMiddleware } from 'graphql-middleware';
-import { authMiddleware } from './api/middlewares';
+import mongoose from "mongoose";
+import { GraphQLServer } from "graphql-yoga";
+import { makeExecutableSchema } from "graphql-tools";
+import { applyMiddleware } from "graphql-middleware";
+import graphqlConfig from "./api";
+import { authMiddleware } from "./api/middlewares";
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/gql_db', { useNewUrlParser: true });
+mongoose.connect("mongodb://localhost:27017/gql_db", { useNewUrlParser: true });
 
 const PORT = 8080;
 
@@ -14,15 +14,15 @@ const options = {
     tracing: true,
     debug: true,
     port: PORT,
-    endpoint: '/graphql',
-    playground: '/docs',
-}
+    endpoint: "/graphql",
+    playground: "/docs",
+};
 
 // Create the schema
 const schema = makeExecutableSchema({
     typeDefs: graphqlConfig.typeDefs,
     resolvers: graphqlConfig.resolvers,
-})
+});
 
 // Apply middlewares on the schema
 const protectedSchema = applyMiddleware(schema, authMiddleware);

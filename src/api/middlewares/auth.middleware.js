@@ -1,16 +1,16 @@
-import jwt from 'jsonwebtoken';
-import { APP_SECRET } from '../../config';
-import { AuthenticationError } from 'apollo-server';
+import jwt from "jsonwebtoken";
+import { AuthenticationError } from "apollo-server";
+import APP_SECRET from "../../config";
 
-async function requireAuth(resolver, parent, arg, ctx, info) {
-    const Authorization = ctx.request.get('Authorization');
-    if(!Authorization){
+async function requireAuth(resolver, parent, arg, ctx) {
+    const Authorization = ctx.request.get("Authorization");
+    if (!Authorization) {
         throw new AuthenticationError("Authorization header is missing");
     }
-    const token = Authorization.replace('Bearer ','');
+    const token = Authorization.replace("Bearer ", "");
     const { userId } = jwt.verify(token, APP_SECRET);
     const user = await ctx.models.user.findOne({ _id: userId });
-    if(!user){
+    if (!user) {
         throw new AuthenticationError("UnAuthenticated");
     }
     ctx.userId = user._id;

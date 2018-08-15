@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import Joi from "joi";
 
 export function validateUser(user) {
     const schema = Joi.object().keys({
@@ -8,10 +8,10 @@ export function validateUser(user) {
         password: Joi.string()
             .min(6)
             .max(10)
-            .required()
+            .required(),
     });
     const { error, value } = Joi.validate(user, schema);
-    if(error && error.details) {
+    if (error && error.details) {
         return { error };
     }
     return { value };
