@@ -1,7 +1,11 @@
 export default {
     Query: {
-        async allProducts(_, args, ctx) {
-            const res = await ctx.models.product.find();
+        async allProducts(_, { first = 5, skip = 0 }, ctx) {
+            const res = await ctx.models.product
+                .find()
+                .select()
+                .skip(skip)
+                .limit(first);
             return res;
         },
         async getProduct(_, { _id }, ctx) {
