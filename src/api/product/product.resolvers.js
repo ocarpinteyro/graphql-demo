@@ -1,8 +1,17 @@
 export default {
     Query: {
-        async allProducts(_, { first = 5, skip = 0 }, ctx) {
+        async allProducts(_, { first = 5, skip = 0, filter }, ctx) {
+            const query = filter
+                ? {
+                    $or: [
+                        {
+                            name: filter,
+                        },
+                    ],
+                }
+                : {};
             const res = await ctx.models.product
-                .find()
+                .find(query)
                 .select()
                 .skip(skip)
                 .limit(first);
