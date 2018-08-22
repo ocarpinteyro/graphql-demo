@@ -10,7 +10,7 @@ type Product {
 }
 type Query {
     getProduct(_id: ID): Product!,
-        allProducts: [Product]!,
+    allProducts( first: Int, skip: Int ): [Product]!,
 }
 input ProductInput {
     name: String!,
