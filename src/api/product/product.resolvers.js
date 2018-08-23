@@ -1,6 +1,6 @@
 export default {
     Query: {
-        async allProducts(_, { first = 5, skip = 0, filter }, ctx) {
+        async allProducts(_, { first = 5, skip = 0, filter, orderBy }, ctx) {
             const query = filter
                 ? {
                     $or: [
@@ -14,7 +14,8 @@ export default {
                 .find(query)
                 .select()
                 .skip(skip)
-                .limit(first);
+                .limit(first)
+                .sort(orderBy);
             return res;
         },
         async getProduct(_, { _id }, ctx) {
