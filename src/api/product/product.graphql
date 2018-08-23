@@ -1,3 +1,8 @@
+enum Status {
+    NEW
+    RELEASED
+    FAILED
+}
 type Owner {
     _id: ID!,
     email: String!,
@@ -8,6 +13,7 @@ type Product {
     qty: Int,
     owner: Owner!,
     createdAt: String,
+    status: Status,
 }
 type Query {
     getProduct(_id: ID): Product!,
@@ -17,6 +23,7 @@ type Query {
 input ProductInput {
     name: String!,
     qty: Int,
+    status: Status,
 }
 type Mutation {
     createProduct(input: ProductInput!) : Product!,

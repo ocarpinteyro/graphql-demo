@@ -15,6 +15,11 @@ const ProductSchema = new Schema({
         type: Schema.Types.ObjectId,
         required: true,
     },
+    status: {
+        type: String,
+        enum: ["NEW", "RELEASED", "FAILED"],
+        default: "NEW",
+    },
 }, { timestamps: true });
 
 export default mongoose.model("product", ProductSchema);
