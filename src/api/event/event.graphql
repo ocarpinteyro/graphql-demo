@@ -1,0 +1,63 @@
+interface Event {
+    id: ID!
+    name: String!
+    startsAt: String
+    endsAt: String
+    venue: String!
+    minAgeRestriction: Int
+}
+
+type Concert implements Event{
+    id: ID!
+    name: String!
+    startsAt: String
+    endsAt: String
+    venue: String!
+    minAgeRestriction: Int
+    performingBand: String # Concert
+}
+type Festival implements Event {
+    id: ID!
+    name: String!
+    startsAt: String
+    endsAt: String
+    venue: String!
+    minAgeRestriction: Int
+    performers: [String]  # Festival
+}
+type Conference implements Event {
+    id: ID!
+    name: String!
+    startsAt: String
+    endsAt: String
+    venue: String!
+    minAgeRestriction: Int
+    speakers: [String] # Conference
+    workshops: [String] #Conference
+}
+
+extend type Query {
+    # Retrieve Events at a specific Venue
+    findEventsAtVenue(venue: String!): [Event]
+}
+enum EventType {
+    CONFERENCE
+    FESTIVAL
+    CONCERT
+}
+
+input newEventInput {
+    name: String!
+    type: EventType!
+    startsAt: String
+    endsAt: String
+    venue: String!
+    minAgeRestriction: Int
+    speakers: [String]
+    workshops: [String]
+    performers: [String]
+    performingBand: String
+}
+extend type Mutation {
+    newEvent(input: newEventInput!): Event!
+}
