@@ -1,5 +1,7 @@
 import { parseDate } from "../../utils/utils";
 
+const CREATE_PRODUCT_TRIGGER = "CREATE_PRODUCT";
+
 export default {
     Query: {
         async allProducts(_, {
@@ -44,11 +46,13 @@ export default {
     Mutation: {
         async createProduct(_, { input }, ctx) {
             console.log("2. Product parent resolver run")
-            const res = await ctx.models.product.create({
+            const product = await ctx.models.product.create({
                 ...input,
                 owner: ctx.userId,
             });
-            return res;
+            // Notify to user a new product has released
+            ctx.pubSub.publish(CREATE_PRODUCT_TRIGGER, { newProduct: product });
+            return product;
         },
         async updateProduct(_, { _id, input }, ctx) {
             const res = await ctx.models.product.findOneAndUpdate({ _id }, input, { new: true });
@@ -70,6 +74,14 @@ export default {
                 "_id email",
             );
             return owner;
+        },
+    },
+    Subscription: {
+        newProduct: {
+            subscribe(_, args, { pubSub }) {
+                // New Listener, event, trigger
+                return pubSub.asyncIterator(CREATE_PRODUCT_TRIGGER);
+            },
         },
     },
 };
