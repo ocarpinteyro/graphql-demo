@@ -30,3 +30,6 @@ type Mutation {
     updateProduct(_id: ID!, input: ProductInput!) : Product!,
     deleteProduct(_id: ID!) : Product!,
 }
+type Subscription {
+    newProduct: Product,
+}
