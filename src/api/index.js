@@ -1,9 +1,10 @@
 import { merge } from "lodash";
-import { PubSub } from "graphql-yoga"
+import { PubSub } from "graphql-yoga";
 import product from "./product";
 import auth from "./auth";
 import event from "./event";
 import search from "./search";
+import loaders from "./dataloaders";
 
 const pubSub = new PubSub();
 
@@ -18,5 +19,6 @@ export default {
             event: event.model,
         },
         pubSub,
+        loaders: loaders(),
     }),
 };
