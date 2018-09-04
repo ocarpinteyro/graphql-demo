@@ -5,7 +5,7 @@ const CREATE_PRODUCT_TRIGGER = "CREATE_PRODUCT";
 export default {
     Query: {
         async allProducts(_, {
-            first = 5, skip = 0, filter, orderBy,
+            first = 50, skip = 0, filter, orderBy,
         }, ctx) {
             const query = filter
                 ? {
@@ -65,15 +65,8 @@ export default {
     },
     Product: {
         async owner(product, args, ctx) {
-            console.log("3. Onwer Resolver run");
-            console.log(product);
-            const owner = await ctx.models.user.findOne(
-                {
-                    _id: product.owner,
-                },
-                "_id email",
-            );
-            return owner;
+            const ownerQue = await ctx.loaders.owner.load(product.owner);
+            return ownerQue;
         },
     },
     Subscription: {

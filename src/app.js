@@ -8,6 +8,7 @@ import { getDateInNumbers, parseDate } from "./utils/utils";
 
 mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://localhost:27017/gql_db", { useNewUrlParser: true });
+mongoose.set("debug", true);
 
 const PORT = 8080;
 
