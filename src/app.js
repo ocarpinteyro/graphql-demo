@@ -1,23 +1,44 @@
-import express from 'express';
-import graphqlHTTP from 'express-graphql';
-import mongoose from 'mongoose';
-import schema from './schema';
+import mongoose from "mongoose";
+import { GraphQLServer } from "graphql-yoga";
+import { makeExecutableSchema } from "graphql-tools";
+import { applyMiddleware } from "graphql-middleware";
+import graphqlConfig from "./api";
+import { authMiddleware } from "./api/middlewares";
+import { getDateInNumbers, parseDate } from "./utils/utils";
+import { DB } from "./config";
 
-const app = express();
-const PORT = 3000;
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/gql_db');
+mongoose.connect(`mongodb://localhost:27017/${DB}`, { useNewUrlParser: true });
+mongoose.set("debug", true);
 
-app.use('/graphql', graphqlHTTP({
-    graphiql: true,
-    schema
-}));
-app.get('/', (req, res) => {
-    return res.json({
-        msg: 'hello graphql'
-    })
-})
+const PORT = 8080;
 
-app.listen(PORT, () => {
-    console.log(`Server is running at PORT ${PORT}`);
-})
+const options = {
+    tracing: true,
+    debug: true,
+    port: PORT,
+    endpoint: "/graphql",
+    playground: "/docs",
+};
+
+// Create the schema
+const schema = makeExecutableSchema({
+    typeDefs: graphqlConfig.typeDefs,
+    resolvers: graphqlConfig.resolvers,
+});
+
+// Apply middlewares on the schema
+const protectedSchema = applyMiddleware(schema, authMiddleware);
+
+// Provided the protected Schema to GraphQL Server
+const server = new GraphQLServer({
+    schema: protectedSchema,
+    context: graphqlConfig.context,
+});
+
+const dateInNumbers = getDateInNumbers();
+console.log(dateInNumbers);
+const date = parseDate(dateInNumbers);
+console.log(date);
+
+server.start(options, () => console.log(`Server GraphQL is running on localhost:${PORT}`))
