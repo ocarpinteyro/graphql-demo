@@ -10,7 +10,7 @@ async function batchOwners(ownerIds) {
         },
     });
     const userByIds = keyBy(users, "_id");
-    console.log(userByIds);
+    console.log("user by id: ", userByIds);
     return ownerIds.map(ownerId => userByIds[ownerId]);
 }
 

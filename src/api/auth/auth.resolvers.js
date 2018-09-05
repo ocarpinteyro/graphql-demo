@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { validateUser } from "../../utils/utils";
-import APP_SECRET from "../../config";
+import { APP_SECRET } from "../../config";
 
 async function signup(_, { input }, ctx) {
     const { value, error } = validateUser(input);

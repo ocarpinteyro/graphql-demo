@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { AuthenticationError } from "apollo-server";
-import APP_SECRET from "../../config";
+import { APP_SECRET } from "../../config";
 
 async function requireAuth(resolver, parent, arg, ctx) {
     const Authorization = ctx.request.get("Authorization");
