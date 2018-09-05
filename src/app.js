@@ -5,9 +5,10 @@ import { applyMiddleware } from "graphql-middleware";
 import graphqlConfig from "./api";
 import { authMiddleware } from "./api/middlewares";
 import { getDateInNumbers, parseDate } from "./utils/utils";
+import { DB } from "./config";
 
 mongoose.Promise = global.Promise;
-mongoose.connect("mongodb://localhost:27017/gql_db", { useNewUrlParser: true });
+mongoose.connect(`mongodb://localhost:27017/${DB}`, { useNewUrlParser: true });
 mongoose.set("debug", true);
 
 const PORT = 8080;
