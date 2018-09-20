@@ -36,7 +36,7 @@ async function login(parent, { input }, ctx) {
     if (!matched) {
         throw new Error("Password inválido");
     }
-    const token = jwt.sign({ userId: user._id }, APP_SECRET);
+    const token = jwt.sign({ userId: user._id }, APP_SECRET, { expiresIn: 120 });
     return {
         token,
         user: {
@@ -54,7 +54,7 @@ function loginByClient(parent, { input }) {
     if (value.key !== CLIENT_KEY) {
         throw new Error("No existe el key del cliente");
     }
-    const token = jwt.sign({ clientKey: CLIENT_KEY }, APP_SECRET);
+    const token = jwt.sign({ clientKey: CLIENT_KEY }, APP_SECRET, { expiresIn: 120 });
     return {
         token,
         client: {
