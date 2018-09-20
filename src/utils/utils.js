@@ -17,6 +17,20 @@ export function validateUser(user) {
     return { value };
 }
 
+export function validateClient(client) {
+    const schema = Joi.object().keys({
+        key: Joi.string()
+            .min(8)
+            .max(64)
+            .required(),
+    });
+    const { error, value } = Joi.validate(client, schema);
+    if (error && error.details) {
+        return { error };
+    }
+    return { value };
+}
+
 export function getDateInNumbers() {
     const date = new Date();
     return Date.parse(date);

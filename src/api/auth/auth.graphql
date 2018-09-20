@@ -3,9 +3,18 @@ type User {
     email: String
 }
 
+type Client {
+    key: String!
+}
+
 type AuthPayload {
     token: String!
     user: User
+}
+
+type ClientAuthPayload {
+    token: String!
+    client: Client
 }
 
 input AuthInput {
@@ -13,7 +22,12 @@ input AuthInput {
     password: String!
 }
 
+input ClientAuthInput {
+    key: String!
+}
+
 extend type Mutation {
     signup(input: AuthInput!) : AuthPayload!
     login(input: AuthInput!) : AuthPayload!
+    loginByClient(input: ClientAuthInput!) : ClientAuthPayload!
 }

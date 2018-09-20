@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { validateUser } from "../../utils/utils";
-import { APP_SECRET } from "../../config";
+import { validateUser, validateClient } from "../../utils/utils";
+import { APP_SECRET, CLIENT_KEY } from "../../config";
 
 async function signup(_, { input }, ctx) {
     const { value, error } = validateUser(input);
@@ -46,9 +46,27 @@ async function login(parent, { input }, ctx) {
     };
 }
 
+function loginByClient(parent, { input }) {
+    const { value, error } = validateClient(input);
+    if (error) {
+        throw new Error(error.message);
+    }
+    if (value.key !== CLIENT_KEY) {
+        throw new Error("No existe el key del cliente");
+    }
+    const token = jwt.sign({ clientKey: CLIENT_KEY }, APP_SECRET);
+    return {
+        token,
+        client: {
+            key: value.key,
+        },
+    };
+}
+
 export default {
     Mutation: {
         signup,
         login,
+        loginByClient,
     },
 };
